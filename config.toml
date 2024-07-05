@@ -1,0 +1,11 @@
+baseURL = "https://www.gaminatorbonuscode.net"
+languageCode = "en-us"
+title = "Gaminator Bonus Code"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[taxonomies]
+  tag = "tags"
