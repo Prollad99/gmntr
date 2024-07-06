@@ -14,9 +14,7 @@ Welcome to **Gaminator Bonus Code**, your premier source for the latest Gaminato
 
 ## Today's Gaminator Bonus Codes
 
-- **Bonus Code 1**: [f4j8l](#)
-- **Bonus Code 2**: [bv892](#)
-- **Bonus Code 3**: [v5h7k9](#)
+{{< rewards >}}
 
 Be sure to check back tomorrow for more codes!
 
