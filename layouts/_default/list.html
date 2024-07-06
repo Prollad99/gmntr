@@ -1,0 +1,14 @@
+{{ define "main" }}
+    <div class="container">
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <h1>{{ .Title }}</h1>
+                <ul class="list-group mt-3">
+                    {{ range .Pages }}
+                        <li class="list-group-item"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                    {{ end }}
+                </ul>
+            </div>
+        </div>
+    </div>
+{{ end }}
