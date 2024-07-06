@@ -51,4 +51,4 @@ Follow Gaminator on social media and regularly check their website for the lates
 
 By leveraging these strategies, you can maximize your free coins in Gaminator Slot Machines and enjoy a more rewarding gaming experience. Remember to log in daily, participate in events, invite friends, and complete in-game achievements to build your coin stash. Happy gaming!
 
-For more tips and daily bonus codes, visit [gaminatorbonuscode.net](https://gaminatorbonuscode.net).
+For more tips and daily bonus codes, visit [gaminatorbonuscode.net](https://www.gaminatorbonuscode.net).
