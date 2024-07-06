@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="3; url='/'">
+  <title>Page Not Found</title>
+  <style>
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap);
+    body {
+    font-family: open sans,roboto, sans-serif;
+    line-height:1.625;
+      text-align: center;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 3em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.5em;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    a {
+      color: #3498db;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #207abd;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>404 - Page Not Found</h1>
+    <p>Redirecting you to the <a href="/">homepage</a> in 3 seconds.</p>
+  </div>
+  <script>
+    setTimeout(function() {
+      window.location.href = "/";
+    }, 3000);
+  </script>
+</body>
+</html>
