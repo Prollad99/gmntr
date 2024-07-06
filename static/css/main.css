@@ -1,0 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap);
+*{scroll-behavior:smooth;}
+body{
+font-family: open sans,roboto, sans-serif;
+line-height:1.625;
+  font-size: 15px;
+  color: #444;
+  margin: 0;
+  background-color: #efe9e9;
+}
+.fixed-height-scroll {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+}
