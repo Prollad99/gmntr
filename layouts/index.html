@@ -1,0 +1,52 @@
+{{ define "main" }}
+    <main class="container">
+        <!-- Display the content of _index.md -->
+        <div class="row">
+            <div class="col">
+                <div class="card shadow-sm mb-2">
+                    <div class="card-body">
+                        {{ .Content }}
+<!-- share start -->
+                        <div class="mt-4">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="btn btn-primary mb-2 me-2">
+                                <i class="bi bi-facebook"></i> Share on Facebook
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ .Permalink }}&text={{ .Title }}" class="btn btn-info mb-2 me-2">
+                                <i class="bi bi-twitter"></i> Tweet
+                            </a>
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ .Permalink }}&title={{ .Title }}" class="btn btn-primary mb-2 me-2">
+                                <i class="bi bi-linkedin"></i> Share on LinkedIn
+                            </a>
+                            <a href="https://www.reddit.com/submit?url={{ .Permalink }}&title={{ .Title }}" class="btn btn-danger mb-2 me-2">
+                                <i class="bi bi-reddit"></i> Share on Reddit
+                            </a>
+                            <a href="https://api.whatsapp.com/send?text={{ .Permalink }}" class="btn btn-success mb-2 me-2">
+                                <i class="bi bi-whatsapp"></i> Share on WhatsApp
+                            </a>
+                        </div>
+<!-- share end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display a list of all posts -->
+        <div class="row">
+            <div class="col">
+                <div class="card shadow-sm mb-2">
+                    <div class="card-body">
+                        <h2>Blog</h2>
+                        <ul class="list-group fixed-height-scroll">
+                            {{ $pages := where .Site.RegularPages "Params.excludeFromHome" "ne" true }}
+                            {{ range $pages }}
+                                <li class="list-group-item">
+                                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                </li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{{ end }}
