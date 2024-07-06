@@ -54,6 +54,6 @@ Yes, you can use multiple bonus codes in a single day as long as they are valid 
 
 **Where can I find more information about Gaminator Slots?**
 
-For more information about Gaminator Slots, including game tips and strategies, visit our [blog section](#).
+For more information about Gaminator Slots, including game tips and strategies, visit our [blog section](#blog).
 
 Thank you for visiting **Gaminator Bonus Code**. Enjoy your free coins and happy gaming!
