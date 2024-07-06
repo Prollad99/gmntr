@@ -6,6 +6,16 @@
                 <div class="card shadow-sm mb-2">
                     <div class="card-body">
                         {{ .Content }}
+<!-- tags -->
+{{ if .Params.tags }}
+  <div class="tags mt-3 mb-3">
+    <span class="badge badge-primary">Tags:</span>
+    {{ range .Params.tags }}
+      <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="badge badge-secondary">{{ . }}</a>
+    {{ end }}
+  </div>
+{{ end }}
+<!-- end -->
 <!-- share start -->
                         <div class="mt-4">
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="btn btn-primary mb-2 me-2">
