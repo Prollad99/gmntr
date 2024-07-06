@@ -1,0 +1,21 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>" | safeHTML -}}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Add homepage -->
+  <url>
+    <loc>{{ .Site.BaseURL | safeHTML }}</loc>
+    <lastmod>{{ .Site.LastChange.Format "2006-01-02" }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  {{ range .Site.RegularPages }}
+    {{ if not .Params.sitemap_exclude }}
+      <url>
+        <loc>{{ .Permalink | safeHTML }}</loc>
+        <lastmod>{{ .Date.Format "2006-01-02" }}</lastmod>
+        <changefreq>{{ with .Params.changefreq }}{{ . }}{{ else }}daily{{ end }}</changefreq>
+        <priority>0.5</priority>
+      </url>
+    {{ end }}
+  {{ end }}
+</urlset>
