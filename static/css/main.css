@@ -12,3 +12,17 @@ line-height:1.625;
     max-height: 400px; /* Adjust the height as needed */
     overflow-y: auto;
 }
+
+.custom-nav-link {
+    color: #ffffff !important;
+  }
+  .custom-nav-link:hover {
+    color: #ffcc00 !important;
+  }
+
+  .custom-footer-link {
+  color: #ffffff !important;
+  }
+  .custom-footer-link:hover {
+  color: #ffcc00 !important;
+  }
