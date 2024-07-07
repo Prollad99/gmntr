@@ -45,7 +45,7 @@
             <div class="col">
                 <div class="card shadow-sm mb-2">
                     <div class="card-body">
-                        <h2 id="blog">Blog</h2>
+                        <h2>Blog</h2>
                         <ul class="list-group fixed-height-scroll">
                             {{ $pages := where .Site.RegularPages "Params.excludeFromHome" "ne" true }}
                             {{ range $pages }}
