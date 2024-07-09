@@ -1,5 +1,5 @@
 ---
-title: "Gaminator Bonus Codes and Free Coins 2024"
+title: "Gaminator Bonus Code and Free Coins 2024"
 description: "Get your daily Gaminator bonus codes here! Stay updated with the latest free coins and spins to maximize your Gaminator Slots experience."
 keywords: ["Gaminator bonus code", "free Gaminator coins", "Gaminator Slots rewards"]
 summary: "Find daily Gaminator bonus codes for free coins and spins. Your one-stop destination for all Gaminator Slots rewards."
