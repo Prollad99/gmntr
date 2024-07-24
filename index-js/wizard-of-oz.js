@@ -14,8 +14,8 @@ const currentDate = moment().format('YYYY-MM-DD');
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
 
-    // Scroll down the page to load more content
-    await autoScroll(page);
+    // Function to scroll down and expand all posts
+    await autoScrollAndExpand(page);
 
     // Get the content after scrolling
     const content = await page.content();
@@ -52,22 +52,21 @@ const currentDate = moment().format('YYYY-MM-DD');
   }
 })();
 
-// Function to auto-scroll the page
-async function autoScroll(page){
+// Function to auto-scroll the page and expand all posts
+async function autoScrollAndExpand(page){
   await page.evaluate(async () => {
-    await new Promise((resolve, reject) => {
-      var totalHeight = 0;
-      var distance = 100;
-      var timer = setInterval(() => {
-        var scrollHeight = document.body.scrollHeight;
-        window.scrollBy(0, distance);
-        totalHeight += distance;
+    const distance = 100;
+    const delay = 100;
+    while (document.documentElement.scrollHeight > window.scrollY + window.innerHeight) {
+      window.scrollBy(0, distance);
+      await new Promise(resolve => setTimeout(resolve, delay));
 
-        if(totalHeight >= scrollHeight){
-          clearInterval(timer);
-          resolve();
+      // Click on "See More" or "Continue Reading" buttons if they exist
+      document.querySelectorAll('div[role="button"]').forEach(button => {
+        if (button.innerText.includes('See More') || button.innerText.includes('Continue Reading')) {
+          button.click();
         }
-      }, 100);
-    });
+      });
+    }
   });
 }
