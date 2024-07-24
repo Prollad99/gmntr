@@ -17,38 +17,14 @@
             });
         }
 
-        let deferredPrompt;
-        const installBanner = document.getElementById('installBanner');
-        const installButton = document.getElementById('installButton');
-
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
-            e.preventDefault();
-            // Stash the event so it can be triggered later.
-            deferredPrompt = e;
-            // Show the install banner
-            installBanner.style.display = 'block';
-
-            installButton.addEventListener('click', () => {
-                // Hide the install banner
-                installBanner.style.display = 'none';
-                // Show the install prompt
-                deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    } else {
-                        console.log('User dismissed the install prompt');
-                    }
-                    deferredPrompt = null;
-                });
-            });
+            console.log('beforeinstallprompt event fired');
+            // Optionally, you can log or perform some other actions here
+            // but DO NOT prevent the default behavior
         });
 
         window.addEventListener('appinstalled', () => {
-            // Hide the install banner
-            installBanner.style.display = 'none';
+            console.log('appinstalled event fired');
             console.log('PWA was installed');
         });
 
