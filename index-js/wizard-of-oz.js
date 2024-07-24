@@ -2,9 +2,11 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
+const moment = require('moment');
 
-const url = 'https://facebook.com/SlotsWizardOfOz/';
+const url = 'https://mosttechs.com/wizard-of-oz-slots-free-coins/';
 const maxLinks = 100;
+const currentDate = moment().format('YYYY-MM-DD');
 
 axios.get(url)
   .then(({ data }) => {
@@ -12,10 +14,10 @@ axios.get(url)
     const links = [];
 
     $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
-      if (links.length >= maxLinks) return false;
+      if (links.length >= maxLinks) return false;  // Limit to maxLinks
+
       const link = $(element).attr('href');
-      const date = new Date().toISOString().split('T')[0];
-      links.push({ href: link, text: `Wizard of Oz Free Coins - ${date}` });
+      links.push({ href: link, text: `Wizard of Oz Free Coins - ${currentDate}` });
     });
 
     console.log('Fetched links:', links);
