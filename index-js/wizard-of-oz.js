@@ -4,19 +4,32 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 
-const url = 'https://www.facebook.com/SlotsWizardOfOz/';
+const facebookUrl = 'https://www.facebook.com/login';
+const targetUrl = 'https://www.facebook.com/SlotsWizardOfOz/';
+const email = 'www.prollad@gmail.com';
+const password = 'Prollad93.Fb';
 const maxLinks = 100;
 const currentDate = moment().format('YYYY-MM-DD');
 
 (async () => {
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    // Set a common user agent
+    // Set a user agent to mimic a real browser
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-    
-    await page.goto(url, { waitUntil: 'networkidle2' });
+
+    // Navigate to Facebook login page
+    await page.goto(facebookUrl, { waitUntil: 'networkidle2' });
+
+    // Perform login
+    await page.type('#email', email);
+    await page.type('#pass', password);
+    await page.click('button[name="login"]');
+    await page.waitForNavigation({ waitUntil: 'networkidle2' });
+
+    // Navigate to the target page
+    await page.goto(targetUrl, { waitUntil: 'networkidle2' });
 
     // Function to scroll down and expand all posts
     await autoScrollAndExpand(page);
