@@ -12,6 +12,10 @@ const currentDate = moment().format('YYYY-MM-DD');
   try {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
+
+    // Set a common user agent
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+    
     await page.goto(url, { waitUntil: 'networkidle2' });
 
     // Function to scroll down and expand all posts
@@ -57,9 +61,16 @@ async function autoScrollAndExpand(page){
   await page.evaluate(async () => {
     const distance = 100;
     const delay = 100;
+    const scrollToBottom = () => {
+      return new Promise(resolve => {
+        const scrollHeight = document.body.scrollHeight;
+        window.scrollTo(0, scrollHeight);
+        setTimeout(resolve, delay);
+      });
+    };
+
     while (document.documentElement.scrollHeight > window.scrollY + window.innerHeight) {
-      window.scrollBy(0, distance);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await scrollToBottom();
 
       // Click on "See More" or "Continue Reading" buttons if they exist
       document.querySelectorAll('div[role="button"]').forEach(button => {
