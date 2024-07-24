@@ -23,10 +23,11 @@ const currentDate = moment().format('YYYY-MM-DD');
 
     await page.goto(facebookUrl, { waitUntil: 'networkidle2' });
 
+    // Improved login handling
     await page.type('#email', email);
     await page.type('#pass', password);
     await page.click('button[name="login"]');
-    await page.waitForNavigation({ waitUntil: 'networkidle2' });
+    await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
     await page.goto(targetUrl, { waitUntil: 'networkidle2' });
 
@@ -37,14 +38,17 @@ const currentDate = moment().format('YYYY-MM-DD');
     const $ = cheerio.load(content);
     const links = [];
 
-    $('a[href*="l.facebook.com/l.php?u="]').each((index, element) => {
+    // Improved selector for fetching links
+    $('a').each((index, element) => {
       if (links.length >= maxLinks) return false;
 
-      const facebookLink = $(element).attr('href');
-      const urlMatch = facebookLink.match(/u=([^&]+)/);
-      if (urlMatch) {
-        const decodedUrl = decodeURIComponent(urlMatch[1]);
-        links.push({ href: decodedUrl, text: `Wizard of Oz Free Coins - ${currentDate}` });
+      const href = $(element).attr('href');
+      if (href && href.includes('l.facebook.com/l.php?u=')) {
+        const urlMatch = href.match(/u=([^&]+)/);
+        if (urlMatch) {
+          const decodedUrl = decodeURIComponent(urlMatch[1]);
+          links.push({ href: decodedUrl, text: `Wizard of Oz Free Coins - ${currentDate}` });
+        }
       }
     });
 
@@ -66,7 +70,7 @@ const currentDate = moment().format('YYYY-MM-DD');
   }
 })();
 
-async function autoScrollAndExpand(page){
+async function autoScrollAndExpand(page) {
   await page.evaluate(async () => {
     const delay = 1000; // Delay between scrolls
 
