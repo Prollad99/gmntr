@@ -18,11 +18,16 @@ const currentDate = moment().format('YYYY-MM-DD');
     const $ = cheerio.load(content);
     const links = [];
 
-    $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
+    $('a[href*="l.facebook.com/l.php?u="]').each((index, element) => {
       if (links.length >= maxLinks) return false;  // Limit to maxLinks
 
-      const link = $(element).attr('href');
-      links.push({ href: link, text: `Wizard of Oz Free Coins - ${currentDate}` });
+      // Extract the actual URL from the Facebook redirect link
+      const facebookLink = $(element).attr('href');
+      const urlMatch = facebookLink.match(/u=([^&]+)/);
+      if (urlMatch) {
+        const decodedUrl = decodeURIComponent(urlMatch[1]);
+        links.push({ href: decodedUrl, text: `Wizard of Oz Free Coins - ${currentDate}` });
+      }
     });
 
     console.log('Fetched links:', links);
