@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 
-const url = 'https://m.facebook.com/SlotsWizardOfOz/';
+const url = 'https://www.facebook.com/SlotsWizardOfOz/';
 const maxLinks = 100;
 const currentDate = moment().format('YYYY-MM-DD');
 
