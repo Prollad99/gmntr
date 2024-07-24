@@ -52,6 +52,11 @@
     <!-- Footer Partial -->
     {{ partial "footer.html" . }}
 
+    <!-- Install banner HTML -->
+  <div id="installBanner" style="display:none;">
+    <button id="installButton">Install GameTwist Free Coins</button>
+  </div>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
@@ -64,28 +69,18 @@
     }
 
     let deferredPrompt;
+    const installBanner = document.getElementById('installBanner');
+    const installButton = document.getElementById('installButton');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event so it can be triggered later.
       deferredPrompt = e;
-      // Update UI notify the user they can install the PWA
-      showInstallPromotion();
-    });
-
-    window.addEventListener('appinstalled', () => {
-      // Log install to analytics
-      console.log('INSTALL: Success');
-      hideInstallPromotion();
-    });
-
-    function showInstallPromotion() {
-      // Show the install prompt in your UI
-      const installBanner = document.getElementById('installBanner');
+      // Show the install banner
       installBanner.style.display = 'block';
 
-      installBanner.addEventListener('click', (e) => {
+      installButton.addEventListener('click', () => {
         // Hide the install banner
         installBanner.style.display = 'none';
         // Show the install prompt
@@ -100,28 +95,21 @@
           deferredPrompt = null;
         });
       });
-    }
+    });
 
-    function hideInstallPromotion() {
-      // Hide the install prompt from your UI
-      const installBanner = document.getElementById('installBanner');
+    window.addEventListener('appinstalled', () => {
+      // Hide the install banner
       installBanner.style.display = 'none';
-    }
+      console.log('PWA was installed');
+    });
 
     // Check if the app is already installed
     if (window.matchMedia('(display-mode: standalone)').matches) {
       console.log('App is already installed');
-      hideInstallPromotion();
     } else {
       console.log('App is not installed');
-      showInstallPromotion();
     }
   </script>
-
-  <!-- Install banner HTML -->
-  <div id="installBanner" style="display:none;">
-    <button>Install GameTwist Free Coins</button>
-  </div>
 
     <!-- Defer loading of JS to improve performance -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
