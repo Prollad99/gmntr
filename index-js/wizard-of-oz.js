@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 
-const url = 'https://mosttechs.com/wizard-of-oz-slots-free-coins/';
+const url = 'https://facebook.com/SlotsWizardOfOz/';
 const maxLinks = 100;
 
 axios.get(url)
