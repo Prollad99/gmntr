@@ -10,10 +10,14 @@ const currentDate = moment().format('YYYY-MM-DD');
 
 (async () => {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
 
+    // Scroll down the page to load more content
+    await autoScroll(page);
+
+    // Get the content after scrolling
     const content = await page.content();
     const $ = cheerio.load(content);
     const links = [];
@@ -47,3 +51,23 @@ const currentDate = moment().format('YYYY-MM-DD');
     process.exit(1);
   }
 })();
+
+// Function to auto-scroll the page
+async function autoScroll(page){
+  await page.evaluate(async () => {
+    await new Promise((resolve, reject) => {
+      var totalHeight = 0;
+      var distance = 100;
+      var timer = setInterval(() => {
+        var scrollHeight = document.body.scrollHeight;
+        window.scrollBy(0, distance);
+        totalHeight += distance;
+
+        if(totalHeight >= scrollHeight){
+          clearInterval(timer);
+          resolve();
+        }
+      }, 100);
+    });
+  });
+}
