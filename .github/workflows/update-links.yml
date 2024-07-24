@@ -2,7 +2,7 @@ name: Update Links and Deploy
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Runs every 30 minutes
+    - cron: '*/30 * * * *'
   push:
     branches:
       - main
@@ -52,10 +52,8 @@ jobs:
           git add static/rewards/wizard-of-oz.md links-json/wizard-of-oz.json
           git commit -m "Update wizard-of-oz reward links" || true
 
-          # Pull with rebase to ensure the latest changes are included
           git pull --rebase
 
-          # Push changes, retry if necessary
           for i in {1..5}; do
             git push https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/Prollad99/gmntr.git && break
             echo "Retry $i: Push failed, retrying in 5 seconds..."
