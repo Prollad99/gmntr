@@ -20,7 +20,7 @@ const currentDate = moment().format('YYYY-MM-DD');
     const page = await browser.newPage();
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-    
+
     await page.goto(facebookUrl, { waitUntil: 'networkidle2' });
 
     await page.type('#email', email);
@@ -30,6 +30,7 @@ const currentDate = moment().format('YYYY-MM-DD');
 
     await page.goto(targetUrl, { waitUntil: 'networkidle2' });
 
+    // Perform scrolling and expanding to ensure all posts are loaded
     await autoScrollAndExpand(page);
 
     const content = await page.content();
@@ -67,19 +68,25 @@ const currentDate = moment().format('YYYY-MM-DD');
 
 async function autoScrollAndExpand(page){
   await page.evaluate(async () => {
-    const distance = 100;
-    const delay = 100;
+    const delay = 1000; // Delay between scrolls
+
     const scrollToBottom = () => {
       return new Promise(resolve => {
-        const scrollHeight = document.body.scrollHeight;
-        window.scrollTo(0, scrollHeight);
+        window.scrollTo(0, document.body.scrollHeight);
         setTimeout(resolve, delay);
       });
     };
 
-    while (document.documentElement.scrollHeight > window.scrollY + window.innerHeight) {
+    while (true) {
+      const previousHeight = document.body.scrollHeight;
       await scrollToBottom();
+      const newHeight = document.body.scrollHeight;
 
+      if (newHeight === previousHeight) {
+        break; // Exit the loop if no more content is loading
+      }
+
+      // Click on "See More" or "Continue Reading" buttons if they exist
       document.querySelectorAll('div[role="button"]').forEach(button => {
         if (button.innerText.includes('See More') || button.innerText.includes('Continue Reading')) {
           button.click();
