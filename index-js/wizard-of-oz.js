@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const url = 'https://mosttechs.com/wizard-of-oz-slots-free-coins/';
+const maxLinks = 100;
 
 axios.get(url)
   .then(({ data }) => {
@@ -11,9 +12,10 @@ axios.get(url)
     const links = [];
 
     $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
+      if (links.length >= maxLinks) return false;
       const link = $(element).attr('href');
-      const text = $(element).text().trim();
-      links.push({ href: link, text: text });
+      const date = new Date().toISOString().split('T')[0];
+      links.push({ href: link, text: `Wizard of Oz Free Coins - ${date}` });
     });
 
     console.log('Fetched links:', links);
