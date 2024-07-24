@@ -49,6 +49,9 @@ jobs:
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         run: |
+          echo "${{ secrets.ACTIONS_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
           git add static/rewards/wizard-of-oz.md links-json/wizard-of-oz.json
           git commit -m "Update wizard-of-oz reward links" || true
 
@@ -57,7 +60,7 @@ jobs:
 
           # Push changes, retry if necessary
           for i in {1..5}; do
-            git push https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/Prollad99/woz-com.git && break
+            git push git@github.com:Prollad99/woz-com.git && break
             echo "Retry $i: Push failed, retrying in 5 seconds..."
             sleep 5
             git pull --rebase
