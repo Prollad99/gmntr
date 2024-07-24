@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
     <link rel="manifest" href="/manifest.json">
-    <script>
+      <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
       .then(function(registration) {
@@ -19,32 +19,30 @@
     let deferredPrompt;
 
     window.addEventListener('beforeinstallprompt', (e) => {
+      // Check if PWA is already installed
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        return;
+      }
+
       e.preventDefault();
       deferredPrompt = e;
 
-      const installButton = document.createElement('button');
-      installButton.innerText = 'Install';
-      document.body.appendChild(installButton);
-
-      installButton.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-            // Optionally, save the user's choice to localStorage
-            localStorage.setItem('pwaInstalled', 'yes');
-          } else {
-            console.log('User dismissed the install prompt');
-          }
-          deferredPrompt = null;
-          installButton.remove();
-        });
+      // Show the install prompt
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+          // Save to localStorage that the PWA has been installed
+          localStorage.setItem('pwaInstalled', 'yes');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        deferredPrompt = null;
       });
     });
 
-    // Check if the app was previously installed
-    if (localStorage.getItem('pwaInstalled') === 'yes') {
-      // Optionally, clear the flag to allow showing the prompt again in the future
+    // Clear localStorage if user revisits after uninstalling the app
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
       localStorage.removeItem('pwaInstalled');
     }
   </script>
