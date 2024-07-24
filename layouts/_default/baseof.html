@@ -14,6 +14,10 @@
         }, function(error) {
           console.log('Service Worker registration failed:', error);
         });
+
+        navigator.serviceWorker.ready.then(function(registration) {
+          console.log('Service Worker ready with scope:', registration.scope);
+        });
       });
     }
 
@@ -21,6 +25,7 @@
 
     // Listen for the beforeinstallprompt event
     window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('beforeinstallprompt event fired');
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event so it can be triggered later.
@@ -31,6 +36,7 @@
 
     function showInstallPrompt() {
       if (deferredPrompt) {
+        console.log('Showing install prompt');
         // Show the install prompt
         deferredPrompt.prompt();
         // Wait for the user to respond to the prompt
@@ -42,6 +48,8 @@
           }
           deferredPrompt = null;
         });
+      } else {
+        console.log('No deferred prompt available');
       }
     }
 
