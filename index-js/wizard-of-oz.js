@@ -13,36 +13,32 @@ const currentDate = moment().format('YYYY-MM-DD');
 
 (async () => {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const page = await browser.newPage();
 
-    // Set a user agent to mimic a real browser
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-
-    // Navigate to Facebook login page
+    
     await page.goto(facebookUrl, { waitUntil: 'networkidle2' });
 
-    // Perform login
     await page.type('#email', email);
     await page.type('#pass', password);
     await page.click('button[name="login"]');
     await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-    // Navigate to the target page
     await page.goto(targetUrl, { waitUntil: 'networkidle2' });
 
-    // Function to scroll down and expand all posts
     await autoScrollAndExpand(page);
 
-    // Get the content after scrolling
     const content = await page.content();
     const $ = cheerio.load(content);
     const links = [];
 
     $('a[href*="l.facebook.com/l.php?u="]').each((index, element) => {
-      if (links.length >= maxLinks) return false;  // Limit to maxLinks
+      if (links.length >= maxLinks) return false;
 
-      // Extract the actual URL from the Facebook redirect link
       const facebookLink = $(element).attr('href');
       const urlMatch = facebookLink.match(/u=([^&]+)/);
       if (urlMatch) {
@@ -69,7 +65,6 @@ const currentDate = moment().format('YYYY-MM-DD');
   }
 })();
 
-// Function to auto-scroll the page and expand all posts
 async function autoScrollAndExpand(page){
   await page.evaluate(async () => {
     const distance = 100;
@@ -85,7 +80,6 @@ async function autoScrollAndExpand(page){
     while (document.documentElement.scrollHeight > window.scrollY + window.innerHeight) {
       await scrollToBottom();
 
-      // Click on "See More" or "Continue Reading" buttons if they exist
       document.querySelectorAll('div[role="button"]').forEach(button => {
         if (button.innerText.includes('See More') || button.innerText.includes('Continue Reading')) {
           button.click();
