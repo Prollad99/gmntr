@@ -1,0 +1,18 @@
+{
+  "name": "wizard-of-oz-links-updater",
+  "version": "1.0.0",
+  "description": "A script to fetch and update Wizard of Oz reward links.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index-js/wizard-of-oz.js"
+  },
+  "keywords": [],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10",
+    "moment": "^2.29.1",
+    "puppeteer": "^10.0.0"
+  }
+}
