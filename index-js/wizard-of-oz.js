@@ -2,9 +2,12 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function run() {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ 
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
-  
+
   try {
     await page.goto('https://www.facebook.com/SlotsWizardOfOz', { waitUntil: 'networkidle2' });
 
