@@ -2,7 +2,7 @@ name: Update Links and Deploy
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/300 * * * *'
   push:
     branches:
       - main
