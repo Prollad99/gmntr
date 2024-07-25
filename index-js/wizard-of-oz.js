@@ -18,6 +18,7 @@ async function run() {
       try {
         await page.waitForSelector('div[role="dialog"]', { timeout: 5000 });
         await page.click('div[role="dialog"] button');
+        console.log('Closed login popup');
       } catch (e) {
         console.log('No login popup found');
       }
@@ -29,6 +30,12 @@ async function run() {
     // Scroll and load posts
     let retries = 5;
     while (retries > 0) {
+      await page.evaluate(() => window.scrollBy(0, window.innerHeight));
+      await page.waitForTimeout(2000); // wait for new content to load
+
+      // Close the popup if it reappears
+      await closeLoginPopup();
+
       const newLinks = await page.evaluate(() => {
         const anchors = Array.from(document.querySelectorAll('a'));
         return anchors
@@ -39,6 +46,8 @@ async function run() {
             date: new Date().toISOString().split('T')[0]
           }));
       });
+
+      console.log('New links found:', newLinks);
 
       // Filter new links that haven't been collected yet
       newLinks.forEach(link => {
@@ -51,13 +60,6 @@ async function run() {
       if (newLinks.length === links.length) {
         retries--;
       }
-
-      // Scroll down
-      await page.evaluate(() => window.scrollBy(0, window.innerHeight));
-      await page.waitForTimeout(2000); // wait for new content to load
-
-      // Close the popup if it reappears
-      await closeLoginPopup();
     }
 
     console.log('Fetched links:', links);
