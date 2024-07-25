@@ -32,12 +32,16 @@ async function run() {
 
       await closeLoginPopup();
 
+      // Extract text and find links
       const newLinks = await page.evaluate(() => {
-        const anchors = Array.from(document.querySelectorAll('a'));
-        console.log('Anchors found:', anchors.length); // Debug log
-        return anchors
-          .map(anchor => anchor.href)
-          .filter(href => href.startsWith('https://zynga.social/'))
+        // Extract all text content
+        const texts = Array.from(document.querySelectorAll('div, p, span, a')).map(el => el.innerText);
+        
+        // Find and return URLs matching the pattern
+        const regex = /https:\/\/zynga\.social\/\S+/g;
+        const links = texts.flatMap(text => Array.from(text.matchAll(regex)).map(match => match[0]));
+
+        return links
           .map(href => ({
             href: href,
             date: new Date().toISOString().split('T')[0]
