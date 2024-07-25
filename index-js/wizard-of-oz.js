@@ -12,7 +12,7 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
   const page = await browser.newPage();
 
   try {
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
     // Close the Facebook login popup if it appears
     const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
@@ -28,8 +28,16 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
     while (links.length < 100 && retries > 0) {
       previousHeight = await page.evaluate('document.body.scrollHeight');
       await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-      await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`);
-      await page.waitForTimeout(2000); // wait for 2 seconds to load more posts
+      try {
+        await page.waitForFunction(
+          `document.body.scrollHeight > ${previousHeight}`,
+          { timeout: 60000 }
+        );
+      } catch (e) {
+        console.error('Timeout while waiting for new content to load:', e);
+        break;
+      }
+      await page.waitForTimeout(5000); // wait for 5 seconds to load more posts
 
       // Extract links
       const newLinks = await page.$$eval('a[href*="zynga.social"]', anchors => {
