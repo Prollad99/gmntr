@@ -63,8 +63,8 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
       console.log('Scrolling down to load more posts');
       
       // Scroll incrementally
-      for (let i = 0; i < 5; i++) {
-        await page.evaluate('window.scrollBy(0, window.innerHeight / 2)');
+      for (let i = 0; i < 10; i++) {
+        await page.evaluate('window.scrollBy(0, window.innerHeight / 5)');
         await page.waitForTimeout(2000); // wait for 2 seconds after each small scroll
       }
       
