@@ -16,30 +16,17 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
 
     // Function to close the Facebook login popup if it appears
     const closePopup = async () => {
-      const popupCloseSelectors = [
-        'div[role="dialog"] div[aria-label="Close"]',
-        'div[role="dialog"] button[aria-label="Close"]',
-        'div[role="dialog"] button[aria-label="Dismiss"]',
-      ];
-
-      for (const selector of popupCloseSelectors) {
-        const popup = await page.$(selector);
-        if (popup) {
-          console.log('Closing the Facebook login popup');
-          await popup.click();
-          await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
-          return true;
-        }
+      const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
+      const popup = await page.$(popupCloseSelector);
+      if (popup) {
+        console.log('Closing the Facebook login popup');
+        await page.click(popupCloseSelector);
+        await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
       }
-      return false;
     };
 
-    // Attempt to close the popup multiple times if necessary
-    for (let i = 0; i < 5; i++) {
-      const popupClosed = await closePopup();
-      if (!popupClosed) break;
-      await page.waitForTimeout(1000); // Wait for 1 second before retrying
-    }
+    // Close the popup initially
+    await closePopup();
 
     // Function to extract links from the page
     const extractLinks = async () => {
@@ -61,14 +48,8 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
 
     while (links.length < 100 && retries > 0) {
       console.log('Scrolling down to load more posts');
-      
-      // Scroll incrementally
-      for (let i = 0; i < 10; i++) {
-        await page.evaluate('window.scrollBy(0, window.innerHeight / 5)');
-        await page.waitForTimeout(2000); // wait for 2 seconds after each small scroll
-      }
-      
-      await page.waitForTimeout(5000); // wait for 5 seconds to load more posts after full scroll
+      await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
+      await page.waitForTimeout(5000); // wait for 5 seconds to load more posts
 
       const newLinks = await extractLinks();
       console.log(`Found ${newLinks.length} new links`);
