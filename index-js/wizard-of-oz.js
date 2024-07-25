@@ -16,18 +16,28 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
 
     // Function to close the Facebook login popup if it appears
     const closePopup = async () => {
-      const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
-      const popup = await page.$(popupCloseSelector);
-      if (popup) {
-        console.log('Closing the Facebook login popup');
-        await popup.click();
-        await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
+      const popupCloseSelectors = [
+        'div[role="dialog"] div[aria-label="Close"]',
+        'div[role="dialog"] button[aria-label="Close"]',
+        'div[role="dialog"] button[aria-label="Dismiss"]',
+      ];
+      
+      for (const selector of popupCloseSelectors) {
+        const popup = await page.$(selector);
+        if (popup) {
+          console.log('Closing the Facebook login popup');
+          await popup.click();
+          await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
+          return true;
+        }
       }
+      return false;
     };
 
     // Attempt to close the popup multiple times if necessary
     for (let i = 0; i < 5; i++) {
-      await closePopup();
+      const popupClosed = await closePopup();
+      if (!popupClosed) break;
       await page.waitForTimeout(1000); // Wait for 1 second before retrying
     }
 
