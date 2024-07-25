@@ -54,9 +54,17 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
       // Close any popups that might have appeared again
       await closePopup();
 
-      // Wait for the network to be idle to ensure all content has loaded
-      await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 120000 });
+      // Check if new content has been loaded
+      const newHeight = await page.evaluate('document.body.scrollHeight');
+      if (newHeight === previousHeight) {
+        retries--;
+        console.log(`No new content loaded. Retries left: ${retries}`);
+      } else {
+        previousHeight = newHeight;
+        retries = 5; // reset retries if new content is loaded
+      }
 
+      // Extract new links
       const newLinks = await extractLinks();
       console.log(`Found ${newLinks.length} new links`);
 
@@ -68,15 +76,6 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
       });
 
       console.log(`Total links collected so far: ${links.length}`);
-
-      const newHeight = await page.evaluate('document.body.scrollHeight');
-      if (newHeight === previousHeight) {
-        retries--;
-        console.log(`No new content loaded. Retries left: ${retries}`);
-      } else {
-        previousHeight = newHeight;
-        retries = 5; // reset retries if new content is loaded
-      }
     }
 
     // Limit to 100 links
