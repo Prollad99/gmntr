@@ -3,8 +3,8 @@ const fs = require('fs');
 
 async function run() {
   const browser = await puppeteer.launch({
-    headless: true, // Set headless to true
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+    headless: true, // Ensure headless mode is true
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
   });
   const page = await browser.newPage();
   
