@@ -12,7 +12,7 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
   const page = await browser.newPage();
 
   try {
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 90000 });
 
     // Close the Facebook login popup if it appears
     const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
