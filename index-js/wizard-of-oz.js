@@ -2,7 +2,10 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function run() {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    headless: true, // Set headless to true
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+  });
   const page = await browser.newPage();
   
   try {
