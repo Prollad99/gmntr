@@ -17,18 +17,23 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
     // Close the Facebook login popup if it appears
     const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
     if (await page.$(popupCloseSelector)) {
+      console.log('Closing the Facebook login popup');
       await page.click(popupCloseSelector);
       await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
     }
 
-    // Extract initial links
-    let links = await page.$$eval('a[href*="zynga.social"]', anchors => {
-      return anchors.map(anchor => ({
-        href: anchor.href,
-        date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
-      }));
-    });
+    // Function to extract links from the page
+    const extractLinks = async () => {
+      return page.$$eval('a[href*="zynga.social"]', anchors => {
+        return anchors.map(anchor => ({
+          href: anchor.href,
+          date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+        }));
+      });
+    };
 
+    // Extract initial links
+    let links = await extractLinks();
     console.log(`Found ${links.length} links initially`);
 
     // Scroll down to load more posts and extract links
@@ -36,15 +41,12 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
     let retries = 5;
 
     while (links.length < 100 && retries > 0) {
+      console.log('Scrolling down to load more posts');
       await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
       await page.waitForTimeout(3000); // wait for 3 seconds to load more posts
 
-      const newLinks = await page.$$eval('a[href*="zynga.social"]', anchors => {
-        return anchors.map(anchor => ({
-          href: anchor.href,
-          date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
-        }));
-      });
+      const newLinks = await extractLinks();
+      console.log(`Found ${newLinks.length} new links`);
 
       // Add only new unique links
       newLinks.forEach(link => {
