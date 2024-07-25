@@ -17,10 +17,10 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
     // Function to close the Facebook login popup if it appears
     const closePopup = async () => {
       const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
-      const popup = await page.$(popupCloseSelector);
-      if (popup) {
+      const popupButton = await page.$(popupCloseSelector);
+      if (popupButton) {
         console.log('Closing the Facebook login popup');
-        await page.click(popupCloseSelector);
+        await popupButton.click();
         await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
       }
     };
