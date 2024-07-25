@@ -26,11 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm install puppeteer axios cheerio
 
-      - name: Install Puppeteer dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxdamage1 libxkbcommon0 libxcomposite1 libxrandr2 libgbm1 libasound2
-
       - name: Fetch and Update Links
         run: |
           node index-js/wizard-of-oz.js
