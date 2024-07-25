@@ -1,101 +1,51 @@
 const puppeteer = require('puppeteer');
-const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
-const moment = require('moment');
 
-const facebookUrl = 'https://www.facebook.com/login';
-const targetUrl = 'https://www.facebook.com/SlotsWizardOfOz/';
-const email = 'www.prollad@gmail.com';
-const password = 'Prollad93.Fb';
-const maxLinks = 100;
-const currentDate = moment().format('YYYY-MM-DD');
+const url = 'https://www.facebook.com/SlotsWizardOfOz/';
 
 (async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: 'networkidle2' });
 
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+    // Close the Facebook popup if it appears
+    const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
+    if (await page.$(popupCloseSelector)) {
+      await page.click(popupCloseSelector);
+    }
 
-    await page.goto(facebookUrl, { waitUntil: 'networkidle2' });
+    // Wait for necessary elements to load
+    await page.waitForSelector('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]');
 
-    // Improved login handling
-    await page.type('#email', email);
-    await page.type('#pass', password);
-    await page.click('button[name="login"]');
-    await page.waitForNavigation({ waitUntil: 'networkidle0' });
-
-    await page.goto(targetUrl, { waitUntil: 'networkidle2' });
-
-    // Perform scrolling and expanding to ensure all posts are loaded
-    await autoScrollAndExpand(page);
-
-    const content = await page.content();
-    const $ = cheerio.load(content);
-    const links = [];
-
-    // Improved selector for fetching links
-    $('a').each((index, element) => {
-      if (links.length >= maxLinks) return false;
-
-      const href = $(element).attr('href');
-      if (href && href.includes('l.facebook.com/l.php?u=')) {
-        const urlMatch = href.match(/u=([^&]+)/);
-        if (urlMatch) {
-          const decodedUrl = decodeURIComponent(urlMatch[1]);
-          links.push({ href: decodedUrl, text: `Wizard of Oz Free Coins - ${currentDate}` });
-        }
-      }
+    const links = await page.$$eval('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]', anchors => {
+      return anchors.map(anchor => ({
+        href: anchor.href,
+        text: anchor.textContent.trim(),
+        date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+      }));
     });
 
-    console.log('Fetched links:', links);
+    // Limit to 100 links
+    const limitedLinks = links.slice(0, 100);
+
+    console.log('Fetched links:', limitedLinks);
 
     const dir = 'links-json';
-    if (!fs.existsSync(dir)) {
+    if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);
     }
 
     const filePath = path.join(dir, 'wizard-of-oz.json');
-    fs.writeFileSync(filePath, JSON.stringify(links, null, 2), 'utf8');
+    fs.writeFileSync(filePath, JSON.stringify(limitedLinks, null, 2), 'utf8');
     console.log(`Links saved to ${filePath}`);
 
-    await browser.close();
   } catch (err) {
     console.error('Error fetching links:', err);
     process.exit(1);
+  } finally {
+    await browser.close();
   }
 })();
-
-async function autoScrollAndExpand(page) {
-  await page.evaluate(async () => {
-    const delay = 1000; // Delay between scrolls
-
-    const scrollToBottom = () => {
-      return new Promise(resolve => {
-        window.scrollTo(0, document.body.scrollHeight);
-        setTimeout(resolve, delay);
-      });
-    };
-
-    while (true) {
-      const previousHeight = document.body.scrollHeight;
-      await scrollToBottom();
-      const newHeight = document.body.scrollHeight;
-
-      if (newHeight === previousHeight) {
-        break; // Exit the loop if no more content is loading
-      }
-
-      // Click on "See More" or "Continue Reading" buttons if they exist
-      document.querySelectorAll('div[role="button"]').forEach(button => {
-        if (button.innerText.includes('See More') || button.innerText.includes('Continue Reading')) {
-          button.click();
-        }
-      });
-    }
-  });
-}
