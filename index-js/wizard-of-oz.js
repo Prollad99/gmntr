@@ -21,7 +21,7 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
         'div[role="dialog"] button[aria-label="Close"]',
         'div[role="dialog"] button[aria-label="Dismiss"]',
       ];
-      
+
       for (const selector of popupCloseSelectors) {
         const popup = await page.$(selector);
         if (popup) {
