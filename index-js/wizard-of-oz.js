@@ -18,6 +18,7 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
     const popupCloseSelector = 'div[role="dialog"] div[aria-label="Close"]';
     if (await page.$(popupCloseSelector)) {
       await page.click(popupCloseSelector);
+      await page.waitForTimeout(2000); // Wait for 2 seconds after closing the popup
     }
 
     // Scroll down to load more posts
@@ -47,12 +48,16 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
         }));
       });
 
+      console.log(`Found ${newLinks.length} new links`);
+
       // Add only new unique links
       newLinks.forEach(link => {
         if (!links.some(existingLink => existingLink.href === link.href)) {
           links.push(link);
         }
       });
+
+      console.log(`Total links collected so far: ${links.length}`);
 
       retries--;
     }
