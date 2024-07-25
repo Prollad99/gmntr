@@ -42,8 +42,8 @@ const url = 'https://www.facebook.com/SlotsWizardOfOz/';
 
     while (links.length < 100 && retries > 0) {
       console.log('Scrolling down to load more posts');
-      await page.evaluate('window.scrollBy(0, window.innerHeight)');
-      await page.waitForTimeout(3000); // wait for 3 seconds to load more posts
+      await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
+      await page.waitForTimeout(5000); // wait for 5 seconds to load more posts
 
       const newLinks = await extractLinks();
       console.log(`Found ${newLinks.length} new links`);
