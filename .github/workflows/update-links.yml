@@ -60,16 +60,20 @@ jobs:
           # Stash any unstaged changes
           git stash --include-untracked
 
-          # Pull with rebase to ensure the latest changes are included
-          git pull --rebase
+          # Pull to ensure the latest changes are included
+          git pull || true
 
           # Apply stashed changes
           git stash pop || true
+
+          # Attempt to resolve merge conflicts automatically
+          git add static/rewards/wizard-of-oz.md links-json/wizard-of-oz.json || true
+          git commit --amend --no-edit || true
 
           # Push changes, retry if necessary
           for i in {1..5}; do
             git push https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/Prollad99/gmntr.git && break
             echo "Retry $i: Push failed, retrying in 5 seconds..."
             sleep 5
-            git pull --rebase
+            git pull || true
           done
