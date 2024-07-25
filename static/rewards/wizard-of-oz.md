@@ -1,4 +1,4 @@
 <ul>
-  <li><a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fzynga.social%2Fedea43&h=AT1EI83SREzo91R-QGl6CvIL-T-rQMgoSwROZTLdMQNmn6voldF8wkBklzYJmSn5BRUt9_pqvD9smmit97dFls1fmMU8uiOtQswcLxoZZw05KJGyKEthTbVcy4Kt5eS6mNA_PoB4SkG2&__tn__=-UK-R&c[0]=AT0BYfxw2Tn5F2AWdZkw7a6Vfi3oQgIhhG_75CNJBlnqzOQHic5NEweVk1lDhQo3KhHWOFFyjjWzTNLlmF3VPgfgggSNaM1VStvAv669e_XjjWy4w2lJWHIvm3Pk0ibtL6GERJp6A0wcXJ4iC5KdkJW4hI4Ut5EaOOdCyMQ-eCm1gdeR0moKPTOVdZ4KWSTzMsLc_uvznmRM2t7-SOwUNbeovTBIDz-Raibu">Wizard of Oz Free Coins - 2024-07-25</a></li>
+  <li><a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fzynga.social%2Fedea43&h=AT3Cw0XK9W1hvDXjTdqOogagHRCu1qfNZBv3RddUrhVguT7dEekcDJ8jGT8yNd9UMSsrXQZIYpKvsHRRdZ9jixDKuqXVpjpglFxwGFLZ881jYkGvTRX6zCrN50jUKpo3urOF0lDZyV4L&__tn__=-UK-R&c[0]=AT1u-n-9w7StGKjTODMnILSQ5wTj_adfIn-CJgfh6iInuOL27pa_N6P3qCc8AdHbmoKDBfcjfPnxES1Yhkml8XUPNmTTnK6XBRw3TTzLzPeExj_0IyjpAqQedeUHo7F9UNC9-1Yn4lvP9qul-JcWYLn6yIDXS5o4ngii1QrKJRqhA8ojvHAHthVb1BrUhcOEl41ECClMS5M0DqK143F223t__GccPKoO9lho">Wizard of Oz Free Coins - 2024-07-25</a></li>
 
 </ul>
