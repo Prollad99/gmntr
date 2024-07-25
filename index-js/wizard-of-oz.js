@@ -13,7 +13,6 @@ async function run() {
 
     let links = [];
 
-    // Function to close the login popup if it appears
     async function closeLoginPopup() {
       try {
         await page.waitForSelector('div[role="dialog"]', { timeout: 5000 });
@@ -24,20 +23,18 @@ async function run() {
       }
     }
 
-    // Close the popup if it appears initially
     await closeLoginPopup();
 
-    // Scroll and load posts
     let retries = 5;
     while (retries > 0) {
       await page.evaluate(() => window.scrollBy(0, window.innerHeight));
-      await page.waitForTimeout(2000); // wait for new content to load
+      await page.waitForTimeout(5000); // Increase wait time for content to load
 
-      // Close the popup if it reappears
       await closeLoginPopup();
 
       const newLinks = await page.evaluate(() => {
         const anchors = Array.from(document.querySelectorAll('a'));
+        console.log('Anchors found:', anchors.length); // Debug log
         return anchors
           .map(anchor => anchor.href)
           .filter(href => href.startsWith('https://zynga.social/'))
@@ -49,14 +46,12 @@ async function run() {
 
       console.log('New links found:', newLinks);
 
-      // Filter new links that haven't been collected yet
       newLinks.forEach(link => {
         if (!links.some(existingLink => existingLink.href === link.href)) {
           links.push(link);
         }
       });
 
-      // Check if no new content is loaded
       if (newLinks.length === links.length) {
         retries--;
       }
@@ -64,7 +59,6 @@ async function run() {
 
     console.log('Fetched links:', links);
     
-    // Save the links to a JSON file
     fs.writeFileSync('links-json/wizard-of-oz.json', JSON.stringify(links, null, 2));
     console.log('Links saved to links-json/wizard-of-oz.json');
   } catch (error) {
