@@ -2,10 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function run() {
-  const browser = await puppeteer.launch({
-    headless: true, // Ensure headless mode is true
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
-  });
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   
   try {
@@ -28,15 +25,16 @@ async function run() {
 
     // Scroll and load posts
     let retries = 5;
-    while (retries > 0 && links.length < 100) {
-      const previousLinkCount = links.length;
-
+    while (retries > 0) {
       const newLinks = await page.evaluate(() => {
         const anchors = Array.from(document.querySelectorAll('a'));
-        return anchors.map(anchor => ({
-          href: anchor.href,
-          date: new Date().toISOString().split('T')[0]
-        }));
+        return anchors
+          .map(anchor => anchor.href)
+          .filter(href => href.startsWith('https://zynga.social/'))
+          .map(href => ({
+            href: href,
+            date: new Date().toISOString().split('T')[0]
+          }));
       });
 
       // Filter new links that haven't been collected yet
@@ -46,17 +44,10 @@ async function run() {
         }
       });
 
-      const newLinkCount = links.length;
-
       // Check if no new content is loaded
-      if (newLinkCount === previousLinkCount) {
+      if (newLinks.length === links.length) {
         retries--;
-      } else {
-        retries = 5; // reset retries if new content was found
       }
-
-      console.log(`Found ${newLinkCount - previousLinkCount} new links`);
-      console.log(`Total links collected so far: ${newLinkCount}`);
 
       // Scroll down
       await page.evaluate(() => window.scrollBy(0, window.innerHeight));
