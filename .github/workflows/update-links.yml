@@ -52,8 +52,14 @@ jobs:
           git add static/rewards/wizard-of-oz.md links-json/wizard-of-oz.json
           git commit -m "Update wizard-of-oz reward links" || true
 
+          # Stash changes before pulling
+          git stash
+
           # Pull with rebase to ensure the latest changes are included
           git pull --rebase
+
+          # Apply stashed changes
+          git stash pop || true
 
           # Push changes, retry if necessary
           for i in {1..5}; do
