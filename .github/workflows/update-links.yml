@@ -31,14 +31,8 @@ jobs:
           node index-js/wizard-of-oz.js
           echo "Content of links-json/wizard-of-oz.json:"
           cat links-json/wizard-of-oz.json
-
-      - name: Update Reward Page
-        run: |
-          echo '<ul>' > static/rewards/wizard-of-oz.md
-          jq -r '.[] | "  <li><a href=\"" + .href + "\">" + .text + " " + .date + "</a></li>\n"' links-json/wizard-of-oz.json >> static/rewards/wizard-of-oz.md
-          echo '</ul>' >> static/rewards/wizard-of-oz.md
-          echo "Content of static/rewards/wizard-of-oz.md:"
-          cat static/rewards/wizard-of-oz.md
+          echo "Content of static/rewards/wizard-of-oz.html:"
+          cat static/rewards/wizard-of-oz.html
 
       - name: Configure Git
         run: |
@@ -49,7 +43,7 @@ jobs:
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         run: |
-          git add static/rewards/wizard-of-oz.md links-json/wizard-of-oz.json
+          git add static/rewards/wizard-of-oz.html links-json/wizard-of-oz.json
           git commit -m "Update wizard-of-oz reward links" || true
 
           # Stash changes before pulling
