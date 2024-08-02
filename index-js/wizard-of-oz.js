@@ -30,17 +30,13 @@ axios.get(url)
 
     $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
       const link = $(element).attr('href');
-      newLinks.push({ href: link, text: `WOZ Free Coins ${currentDate}`, date: currentDate });
-    });
-
-    // Merge new links with existing links, keeping the older dates if they exist
-    const combinedLinks = newLinks.map(newLink => {
-      const existingLink = existingLinks.find(link => link.href === newLink.href);
-      return existingLink ? existingLink : newLink;
+      const existingLink = existingLinks.find(l => l.href === link);
+      const date = existingLink ? existingLink.date : currentDate;
+      newLinks.push({ href: link, text: `WOZ Free Coins ${date}` });
     });
 
     // Remove duplicates and limit the list to 100 links
-    const uniqueLinks = [...combinedLinks, ...existingLinks]
+    const combinedLinks = [...newLinks, ...existingLinks]
       .reduce((acc, link) => {
         if (!acc.find(({ href }) => href === link.href)) {
           acc.push(link);
@@ -49,13 +45,13 @@ axios.get(url)
       }, [])
       .slice(0, 100); // Limit to 100 links
 
-    console.log('Final links:', uniqueLinks);
+    console.log('Final links:', combinedLinks);
 
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
 
-    fs.writeFileSync(filePath, JSON.stringify(uniqueLinks, null, 2), 'utf8');
+    fs.writeFileSync(filePath, JSON.stringify(combinedLinks, null, 2), 'utf8');
     console.log(`Links saved to ${filePath}`);
   })
   .catch(err => {
