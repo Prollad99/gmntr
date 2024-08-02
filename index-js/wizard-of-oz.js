@@ -1,75 +1,33 @@
-const puppeteer = require('puppeteer');
+const axios = require('axios');
+const cheerio = require('cheerio');
 const fs = require('fs');
+const path = require('path');
 
-async function run() {
-  const browser = await puppeteer.launch({ 
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
-  const page = await browser.newPage();
+const url = 'https://mosttechs.com/wizard-of-oz-slots-free-coins/';
 
-  try {
-    await page.goto('https://www.facebook.com/SlotsWizardOfOz', { waitUntil: 'networkidle2' });
+axios.get(url)
+  .then(({ data }) => {
+    const $ = cheerio.load(data);
+    const links = [];
 
-    let links = [];
-
-    async function closeLoginPopup() {
-      try {
-        await page.waitForSelector('div[role="dialog"]', { timeout: 5000 });
-        await page.click('div[role="dialog"] button');
-        console.log('Closed login popup');
-      } catch (e) {
-        console.log('No login popup found');
-      }
-    }
-
-    await closeLoginPopup();
-
-    let retries = 5;
-    while (retries > 0) {
-      await page.evaluate(() => window.scrollBy(0, window.innerHeight));
-      await page.waitForTimeout(5000); // Increase wait time for content to load
-
-      await closeLoginPopup();
-
-      // Extract text and find links
-      const newLinks = await page.evaluate(() => {
-        // Extract all text content
-        const texts = Array.from(document.querySelectorAll('div, p, span, a')).map(el => el.innerText);
-        
-        // Find and return URLs matching the pattern
-        const regex = /https:\/\/zynga\.social\/\S+/g;
-        const links = texts.flatMap(text => Array.from(text.matchAll(regex)).map(match => match[0]));
-
-        return links
-          .map(href => ({
-            href: href,
-            date: new Date().toISOString().split('T')[0]
-          }));
-      });
-
-      console.log('New links found:', newLinks);
-
-      newLinks.forEach(link => {
-        if (!links.some(existingLink => existingLink.href === link.href)) {
-          links.push(link);
-        }
-      });
-
-      if (newLinks.length === links.length) {
-        retries--;
-      }
-    }
+    $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
+      const link = $(element).attr('href');
+      const text = $(element).text().trim();
+      links.push({ href: link, text: text });
+    });
 
     console.log('Fetched links:', links);
-    
-    fs.writeFileSync('links-json/wizard-of-oz.json', JSON.stringify(links, null, 2));
-    console.log('Links saved to links-json/wizard-of-oz.json');
-  } catch (error) {
-    console.error('Error fetching links:', error);
-  } finally {
-    await browser.close();
-  }
-}
 
-run();
+    const dir = 'links-json';
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+
+    const filePath = path.join(dir, 'wizard-of-oz.json');
+    fs.writeFileSync(filePath, JSON.stringify(links, null, 2), 'utf8');
+    console.log(`Links saved to ${filePath}`);
+  })
+  .catch(err => {
+    console.error('Error fetching links:', err);
+    process.exit(1);
+  });
