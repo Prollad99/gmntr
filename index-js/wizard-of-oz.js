@@ -30,7 +30,7 @@ axios.get(url)
 
     $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
       const link = $(element).attr('href');
-      newLinks.push({ href: link, date: currentDate });
+      newLinks.push({ href: link, text: `WOZ Free Coins ${currentDate}`, date: currentDate });
     });
 
     // Merge new links with existing links, keeping the older dates if they exist
