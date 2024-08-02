@@ -35,7 +35,7 @@ axios.get(url)
       newLinks.push({ href: link, text: "WOZ Free Coins", date: date });
     });
 
-    // Combine new links with existing links, keeping the older dates if they exist
+    // Remove duplicates and limit the list to 100 links
     const combinedLinks = [...newLinks, ...existingLinks]
       .reduce((acc, link) => {
         if (!acc.find(({ href }) => href === link.href)) {
