@@ -35,7 +35,7 @@ jobs:
       - name: Update Reward Page
         run: |
           echo '<ul>' > static/rewards/wizard-of-oz.md
-          jq -r '.[] | "  <li><a href=\"" + .href + "\">" + .text + "</a></li>\n"' links-json/wizard-of-oz.json >> static/rewards/wizard-of-oz.md
+          jq -r '.[] | "  <li><a href=\"" + .href + "\">" + .text + " " + .date + "</a></li>\n"' links-json/wizard-of-oz.json >> static/rewards/wizard-of-oz.md
           echo '</ul>' >> static/rewards/wizard-of-oz.md
           echo "Content of static/rewards/wizard-of-oz.md:"
           cat static/rewards/wizard-of-oz.md
