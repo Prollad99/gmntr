@@ -20,7 +20,14 @@ const filePath = path.join(dir, 'wizard-of-oz.json');
 // Read existing links from the JSON file if it exists
 let existingLinks = [];
 if (fs.existsSync(filePath)) {
-  existingLinks = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  try {
+    const fileData = fs.readFileSync(filePath, 'utf8');
+    if (fileData) {
+      existingLinks = JSON.parse(fileData);
+    }
+  } catch (error) {
+    console.error('Error reading existing links:', error);
+  }
 }
 
 axios.get(url)
