@@ -12,10 +12,17 @@ function getCurrentDate() {
   return `${year}-${month}-${day}`;
 }
 
+// Function to format the date in "Month Day, Year" format
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 const url = 'https://mosttechs.com/wizard-of-oz-slots-free-coins/';
 const currentDate = getCurrentDate();
 const dir = 'links-json';
 const filePath = path.join(dir, 'wizard-of-oz.json');
+const htmlFilePath = path.join('static/rewards', 'wizard-of-oz.html');
 
 // Read existing links from the JSON file if it exists
 let existingLinks = [];
@@ -39,7 +46,7 @@ axios.get(url)
       const link = $(element).attr('href');
       const existingLink = existingLinks.find(l => l.href === link);
       const date = existingLink ? existingLink.date : currentDate;
-      newLinks.push({ href: link, text: "WOZ Free Coins", date: date });
+      newLinks.push({ href: link, date: date });
     });
 
     // Combine new links with existing links, keeping the older dates if they exist
@@ -59,7 +66,19 @@ axios.get(url)
     }
 
     fs.writeFileSync(filePath, JSON.stringify(combinedLinks, null, 2), 'utf8');
-    console.log(`Links saved to ${filePath}`);
+
+    // Generate HTML file
+    let htmlContent = '<ul class="list-group">\n';
+    combinedLinks.forEach(link => {
+      htmlContent += `  <li class="list-group-item d-flex justify-content-between align-items-center">\n`;
+      htmlContent += `    <span>WOZ Free Coins for ${formatDate(link.date)}</span>\n`;
+      htmlContent += `    <a href="${link.href}" class="btn btn-primary">Collect</a>\n`;
+      htmlContent += `  </li>\n`;
+    });
+    htmlContent += '</ul>';
+
+    fs.writeFileSync(htmlFilePath, htmlContent, 'utf8');
+    console.log(`HTML file saved to ${htmlFilePath}`);
   })
   .catch(err => {
     console.error('Error fetching links:', err);
