@@ -1,7 +1,7 @@
 <ul>
   <li><a href="https://zynga.social/79mf">WOZ Free Coins 2024-08-02</a></li>
 
-  <li><a href="https://zynga.social/49dc93">WOZ Free Coins 2024-08-02</a></li>
+  <li><a href="https://zynga.social/49dc93">WOZ Free Coins 2024-08-01</a></li>
 
   <li><a href="https://zynga.social/61be99">WOZ Free Coins 2024-08-02</a></li>
 
