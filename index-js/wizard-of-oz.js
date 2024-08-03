@@ -42,7 +42,7 @@ axios.get(url)
     const $ = cheerio.load(data);
     const newLinks = [];
 
-    $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"]').each((index, element) => {
+    $('a[href*="zdnwoz0-a.akamaihd.net"], a[href*="zynga.social"], a[href*="wozslots.onelink.me"]').each((index, element) => {
       const link = $(element).attr('href');
       const existingLink = existingLinks.find(l => l.href === link);
       const date = existingLink ? existingLink.date : currentDate;
