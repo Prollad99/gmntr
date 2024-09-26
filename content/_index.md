@@ -10,7 +10,7 @@ tags: ["Gaminator", "bonus code", "free coins", "slots"]
 
 Welcome to **Gaminator Bonus Code**, your premier source for the latest Gaminator bonus codes. We update this page daily to ensure you never miss out on free coins and spins to enhance your Gaminator Slots experience. Our goal is to provide you with the most up-to-date rewards, so you can enjoy uninterrupted gaming fun.
 
-{{< include-md "static/rewards/gaminator.md" >}}
+{{< rewards >}}
 
 Be sure to check back tomorrow for more codes!
 
